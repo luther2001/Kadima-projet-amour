@@ -473,12 +473,10 @@
     </style>
 </head>
 <body>
-    <!-- Loading -->
     <div id="loading">
         <div class="loading-heart">❤️</div>
     </div>
 
-    <!-- ÉTAPE 1 - Introduction -->
     <div id="step1" class="step active">
         <div>
             <h1>✨ Pour toi ma vie ✨</h1>
@@ -487,14 +485,13 @@
         </div>
     </div>
 
-    <!-- ÉTAPE 2 - Puzzle -->
     <div id="step2" class="step">
         <div class="puzzle-title">
             <h2>🧩 Notre première photo</h2>
         </div>
 
         <div class="reference-box">
-            <img src="images/photo1.jpg" alt="référence" id="puzzleImage">
+            <img src="photo1.jpg" alt="référence" id="puzzleImage">
             <div class="label">reconstitue dans l'ordre 1 à 9</div>
         </div>
 
@@ -510,7 +507,6 @@
         <button class="reset-btn" onclick="app.resetPuzzle()">🔄 Recommencer</button>
     </div>
 
-    <!-- ÉTAPE 3 - Livre de souvenirs -->
     <div id="step3" class="step">
         <div class="book-container" id="bookWrapper">
             <div class="book" id="book">
@@ -529,7 +525,6 @@
         <div class="hint-text">clique sur le livre</div>
     </div>
 
-    <!-- ÉTAPE 4 - Cœur final -->
     <div id="step4" class="step">
         <div class="heart-container" id="heartContainer"></div>
         <div class="final-message">
@@ -539,17 +534,23 @@
     </div>
 
     <script>
-        // TES PHOTOS ICI (à personnaliser)
+        // TES PHOTOS ICI
         const PHOTOS = [
-            { file: 'images/photo1.jpg', caption: "Notre premier regard..." },
-            { file: 'images/photo2.jpg', caption: "Ton sourire qui me fait fondre" },
-            { file: 'images/photo3.jpg', caption: "Ce jour inoubliable" },
-            { file: 'images/photo4.jpg', caption: "Toi et moi" },
-            { file: 'images/photo5.jpg', caption: "Mon cœur s'arrête" },
-            { file: 'images/photo6.jpg', caption: "Cette étincelle" },
-            { file: 'images/photo7.jpg', caption: "Rien que toi" },
-            { file: 'images/photo8 (2).jpg', caption: "Notre bonheur" },
-            { file: 'images/photo9 (2).jpg', caption: "Je t'aime" }
+            { file: 'photo1.jpg', caption: "Notre premier regard..." },
+            { file: 'photo2.jpg', caption: "Ton sourire qui me fait fondre" },
+            { file: 'photo3.jpg', caption: "Ce jour inoubliable" },
+            { file: 'photo4.jpg', caption: "Toi et moi" },
+            { file: 'photo5.jpg', caption: "Mon cœur s'arrête" },
+            { file: 'photo6.jpg', caption: "Cette étincelle" },
+            { file: 'photo7.jpg', caption: "Rien que toi" },
+            { file: 'photo8 (2).jpg', caption: "Notre bonheur" },
+            { file: 'photo9 (2).jpg', caption: "Je t'aime" },
+            { file: 'photo10.jpg', caption: "Moment magique" },
+            { file: 'photo11.jpg', caption: "Notre complicité" },
+            { file: 'photo12.jpg', caption: "Pour toujours" },
+            { file: 'photo13.jpg', caption: "Toi mon âme soeur" },
+            { file: 'photo14.jpg.jpeg', caption: "L'histoire parfaite" },
+            { file: 'photo15.jpg', caption: "À l'infini..." }
         ];
 
         class App {
@@ -601,7 +602,7 @@
 
                 for (let i = 0; i < 9; i++) {
                     const cell = document.createElement('div');
-                    cell.className = `cell ${this.solution[i] !== null ? 'filled' : ''}`;
+                    cell.className = cell ${this.solution[i] !== null ? 'filled' : ''};
                     cell.dataset.index = i;
 
                     if (this.solution[i] !== null) {
@@ -623,7 +624,7 @@
 
                 this.pieces.forEach((piece, index) => {
                     const btn = document.createElement('button');
-                    btn.className = `piece-btn ${this.selectedPiece === index ? 'selected' : ''}`;
+                    btn.className = piece-btn ${this.selectedPiece === index ? 'selected' : ''};
                     btn.textContent = piece;
                     btn.addEventListener('click', () => this.handlePieceClick(index));
                     grid.appendChild(btn);
@@ -693,7 +694,7 @@
 
             updateStatus() {
                 const filled = this.solution.filter(c => c !== null).length;
-                document.getElementById('status').textContent = `${filled}/9 placé(e)s`;
+                document.getElementById('status').textContent = ${filled}/9 placé(e)s;
             }
 
             // ===== ÉTAPE 3 : LIVRE =====
@@ -758,7 +759,7 @@
                     
                     img.style.left = Math.random() * (window.innerWidth - 70) + 'px';
                     img.style.top = Math.random() * (window.innerHeight - 70) + 'px';
-                    img.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    img.style.transform = rotate(${Math.random() * 360}deg);
                     
                     container.appendChild(img);
                 });
@@ -775,7 +776,7 @@
                         
                         photo.style.left = (centerX + x * 20) + 'px';
                         photo.style.top = (centerY - y * 20) + 'px';
-                        photo.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
+                        photo.style.transform = rotate(${Math.random() * 20 - 10}deg);
                     });
                 }, 500);
             }
@@ -783,7 +784,7 @@
             // ===== UTILITAIRE =====
             goToStep(step) {
                 document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-                document.getElementById(`step${step}`).classList.add('active');
+                document.getElementById(step${step}).classList.add('active');
                 this.currentStep = step;
             }
         }
