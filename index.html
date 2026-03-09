@@ -1,10 +1,11 @@
-[02:33, 3/9/2026] Kadim’s: <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>✨ Notre Histoire d'Amour ✨</title>
     <style>
+        /* ===== STYLES COMPLETS ===== */
         * {
             margin: 0;
             padding: 0;
@@ -26,150 +27,1041 @@
 
         /* Loading */
         #loading {
-            pos…
-[02:42, 3/9/2026] Kadim’s: <!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>✨ Notre Histoire d'Amour ✨</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
-        body { font-family: 'Georgia', serif; background: #1a0f1a; color: white; overflow: hidden; height: 100vh; width: 100vw; position: fixed; }
-        #loading { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #1a0f1a; display: flex; justify-content: center; align-items: center; z-index: 1000; transition: opacity 1s; }
-        .loading-heart { font-size: 4rem; animation: heartbeat 1s infinite; }
-        @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
-        .step { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: none; justify-content: center; align-items: center; background: linear-gradient(145deg, #1a0f1a, #2d1a2d); padding: 20px; text-align: center; }
-        .step.active { display: flex; flex-direction: column; }
-        .btn { background: #ff69b4; color: white; border: none; padding: 15px 40px; font-size: 1.2rem; border-radius: 50px; cursor: pointer; box-shadow: 0 10px 20px rgba(255,105,180,0.4); margin-top: 20px; }
-        #step2 { overflow-y: auto; padding: 10px; }
-        .reference-box img { width: 150px; height: 150px; border-radius: 15px; border: 3px solid #ff69b4; object-fit: cover; margin: 10px; }
-        .solution-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 15px; margin: 10px auto; width: 280px; }
-        .cell { aspect-ratio: 1/1; background: rgba(255,255,255,0.05); border: 2px dashed #ff69b4; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; border-radius: 8px; }
-        .cell.filled { border: 2px solid #ff69b4; background: rgba(255,105,180,0.2); color: #ff69b4; font-weight: bold; }
-        .pieces-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 280px; margin: 10px auto; }
-        .piece-btn { aspect-ratio: 1/1; background: #ff69b4; border: none; border-radius: 10px; color: white; font-size: 1.2rem; font-weight: bold; }
-        .piece-btn.selected { border: 3px solid white; transform: scale(1.1); }
-        .victory-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; justify-content: center; align-items: center; z-index: 2000; }
-        .victory-box { background: #ff69b4; padding: 30px; border-radius: 30px; border: 4px solid white; }
-        .book-container { perspective: 1500px; width: 300px; height: 400px; position: relative; }
-        .book { width: 100%; height: 100%; transform-style: preserve-3d; transition: 1s; }
-        .book.open { transform: rotateY(-20deg); }
-        .cover { position: absolute; width: 100%; height: 100%; background: #ff69b4; border-radius: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; backface-visibility: hidden; }
-        .page { position: absolute; width: 100%; height: 100%; background: white; border-radius: 10px; padding: 10px; color: #333; transform-origin: left; transition: 1s; transform: rotateY(180deg); backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .page img { max-width: 90%; max-height: 70%; border-radius: 5px; margin-bottom: 10px; object-fit: cover; }
-        .heart-photo { position: absolute; width: 60px; height: 60px; border-radius: 10px; object-fit: cover; border: 2px solid white; transition: 2s; }
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1a0f1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 1s;
+        }
+
+        .loading-heart {
+            font-size: 4rem;
+            animation: heartbeat 1s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        /* Étapes */
+        .step {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(145deg, #1a0f1a, #2d1a2d);
+        }
+
+        .step.active {
+            display: flex;
+        }
+
+        /* ÉTAPE 1 - MATRIX */
+        #step1 {
+            position: relative;
+        }
+
+        #matrixCanvas, #sparklesCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #sparklesCanvas {
+            z-index: 5;
+        }
+
+        .countdown-wrapper {
+            position: relative;
+            z-index: 20;
+            text-align: center;
+        }
+
+        .countdown-circle {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(255,105,180,0.2);
+            backdrop-filter: blur(20px);
+            border: 3px solid rgba(255,255,255,0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 0 50px rgba(255,105,180,0.5);
+            animation: pulseGlow 2s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 50px rgba(255,105,180,0.5); }
+            50% { box-shadow: 0 0 100px rgba(255,105,180,0.8); }
+        }
+
+        .countdown-circle span {
+            font-size: 8rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #fff, #ff69b4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: countdownPop 1s infinite;
+        }
+
+        @keyframes countdownPop {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        .countdown-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255,255,255,0.9);
+            text-shadow: 0 0 30px #ff69b4;
+        }
+
+        /* ÉTAPE 2 - PLUIE */
+        #step2 {
+            position: relative;
+        }
+
+        #rainCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .rain-message {
+            position: relative;
+            z-index: 20;
+            text-align: center;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(15px);
+            padding: 2rem 4rem;
+            border-radius: 100px;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .rain-message span {
+            font-size: 2rem;
+            display: block;
+            color: white;
+            text-shadow: 0 0 30px #ff69b4;
+        }
+
+        /* ÉTAPE 3 - PUZZLE */
+        #step3 {
+            flex-direction: column;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        .puzzle-title {
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .puzzle-title h2 {
+            color: #ff69b4;
+            font-size: 1.5rem;
+        }
+
+        .reference-box {
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .reference-box img {
+            width: 120px;
+            height: 120px;
+            border-radius: 20px;
+            border: 3px solid #ff69b4;
+            object-fit: cover;
+        }
+
+        .solution-area {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 20px;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 350px;
+        }
+
+        .solution-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 15px;
+        }
+
+        .cell {
+            aspect-ratio: 1/1;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            border: 2px dashed #ff69b4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: rgba(255,255,255,0.2);
+        }
+
+        .cell.filled {
+            border: 3px solid #ff69b4;
+            background: rgba(255,105,180,0.2);
+        }
+
+        .cell.filled span {
+            color: #ff69b4;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .pieces-area {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 20px;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 350px;
+        }
+
+        .pieces-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .piece-btn {
+            aspect-ratio: 1/1;
+            background: #ff69b4;
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+            transition: all 0.2s;
+        }
+
+        .piece-btn:active {
+            transform: scale(0.95);
+            background: #ff1493;
+        }
+
+        .piece-btn.selected {
+            border: 4px solid white;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #ff69b4;
+        }
+
+        .status {
+            margin: 10px 0;
+            color: #ffb6c1;
+        }
+
+        .reset-btn {
+            background: transparent;
+            color: #ffb6c1;
+            border: 2px solid #ffb6c1;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        /* Message de victoire */
+        .victory-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .victory-box {
+            background: #ff69b4;
+            padding: 40px;
+            border-radius: 40px;
+            text-align: center;
+            max-width: 320px;
+            border: 4px solid white;
+            animation: popIn 0.5s;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+
+        .victory-box h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .victory-box p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .victory-box button {
+            background: white;
+            color: #ff69b4;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        /* ÉTAPE 4 - LIVRE */
+        #step4 {
+            background: #2d1a2d;
+        }
+
+        .magic-book-container {
+            perspective: 4000px;
+            width: 90%;
+            max-width: 500px;
+            height: 80vh;
+            max-height: 700px;
+            position: relative;
+            z-index: 30;
+        }
+
+        .magic-book {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 1.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            filter: drop-shadow(0 30px 50px rgba(255,105,180,0.4));
+        }
+
+        .magic-book.open {
+            transform: rotateY(-35deg) translateX(10%) scale(0.95);
+        }
+
+        .magic-cover {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 25px 10px 10px 25px;
+            backface-visibility: hidden;
+            overflow: hidden;
+            background: linear-gradient(145deg, #ff1493, #8b0000, #ff69b4);
+            background-size: 200% 200%;
+            animation: coverGradient 5s infinite;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        @keyframes coverGradient {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        .magic-cover.front {
+            transform: rotateY(0deg);
+        }
+
+        .magic-cover.back {
+            transform: rotateY(180deg);
+        }
+
+        .magic-cover h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .magic-cover .heart {
+            font-size: 4rem;
+            animation: beat 2s infinite;
+        }
+
+        @keyframes beat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .magic-pages {
+            position: absolute;
+            width: 98%;
+            height: 98%;
+            left: 1%;
+            top: 1%;
+            transform-style: preserve-3d;
+        }
+
+        .magic-page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 20px 5px 5px 20px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            backface-visibility: hidden;
+            transform-origin: left;
+            transition: transform 1.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform: rotateY(180deg);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .magic-page img {
+            max-width: 90%;
+            max-height: 60%;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            border: 3px solid white;
+        }
+
+        .page-caption {
+            color: #4a2a4a;
+            font-size: 1rem;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .page-date {
+            color: #ff69b4;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+
+        .hint-text {
+            position: absolute;
+            bottom: 20px;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.9rem;
+        }
+
+        /* ÉTAPE 5 - CŒUR */
+        #step5 {
+            background: #1a0f1a;
+        }
+
+        .giant-heart-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .giant-heart-photo {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            border-radius: 15px;
+            object-fit: cover;
+            box-shadow: 0 10px 25px rgba(255,105,180,0.5);
+            transition: all 2s;
+            border: 3px solid white;
+        }
+
+        .final-message {
+            position: absolute;
+            bottom: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            padding: 20px 40px;
+            border-radius: 50px;
+            border: 2px solid #ff69b4;
+            z-index: 50;
+        }
+
+        .final-message h2 {
+            font-size: 2.5rem;
+            color: #ff69b4;
+            margin-bottom: 10px;
+        }
+
+        .final-message p {
+            font-size: 1.1rem;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .countdown-circle {
+                width: 200px;
+                height: 200px;
+            }
+            .countdown-circle span {
+                font-size: 5rem;
+            }
+            .giant-heart-photo {
+                width: 45px;
+                height: 45px;
+            }
+        }
     </style>
 </head>
 <body>
-    <div id="loading"><div class="loading-heart">❤️</div></div>
+    <!-- Loading -->
+    <div id="loading">
+        <div class="loading-heart">❤️</div>
+    </div>
 
+    <!-- ÉTAPE 1 - MATRIX -->
     <div id="step1" class="step active">
-        <h1>✨ Pour toi ma vie ✨</h1>
-        <p>Résous ce petit défi pour voir notre histoire...</p>
-        <button class="btn" onclick="app.startPuzzle()">Commencer</button>
-    </div>
-
-    <div id="step2" class="step">
-        <h2>🧩 Reconstitue l'ordre</h2>
-        <div class="reference-box"><img src="photo1.jpg" id="refImg"></div>
-        <div class="solution-grid" id="solGrid"></div>
-        <div class="pieces-grid" id="pieceGrid"></div>
-        <div id="status">0/9</div>
-    </div>
-
-    <div id="step3" class="step">
-        <div class="book-container" onclick="app.openBook()">
-            <div class="book" id="book">
-                <div class="cover"><h2>Nos Souvenirs</h2><p>Touche pour ouvrir ❤️</p></div>
-                <div id="pages"></div>
+        <canvas id="matrixCanvas"></canvas>
+        <canvas id="sparklesCanvas"></canvas>
+        <div class="countdown-wrapper">
+            <div class="countdown-circle">
+                <span id="countdown">3</span>
             </div>
+            <div class="countdown-subtitle">Prépare-toi...</div>
         </div>
     </div>
 
+    <!-- ÉTAPE 2 - PLUIE -->
+    <div id="step2" class="step">
+        <canvas id="rainCanvas"></canvas>
+        <div class="rain-message">
+            <span>✨ Des souvenirs pleuvent ✨</span>
+        </div>
+    </div>
+
+    <!-- ÉTAPE 3 - PUZZLE -->
+    <div id="step3" class="step">
+        <div class="puzzle-title">
+            <h2>🧩 Reconstitue notre photo</h2>
+        </div>
+        <div class="reference-box">
+            <img src="photo1.jpg" alt="référence" id="puzzleImage">
+            <div class="label">ordre 1 à 9</div>
+        </div>
+        <div class="solution-area">
+            <div class="solution-grid" id="solutionGrid"></div>
+        </div>
+        <div class="pieces-area">
+            <div class="pieces-grid" id="piecesGrid"></div>
+        </div>
+        <div class="status" id="status">0/9</div>
+        <button class="reset-btn" onclick="app.resetPuzzle()">🔄 Recommencer</button>
+    </div>
+
+    <!-- ÉTAPE 4 - LIVRE -->
     <div id="step4" class="step">
-        <div id="heartCont" style="position:relative;width:100%;height:100%;"></div>
-        <div style="position:absolute;bottom:10%;width:100%;"><h2>Je t'aime ❤️</h2></div>
+        <div class="magic-book-container" id="bookWrapper">
+            <div class="magic-book" id="magicBook">
+                <div class="magic-cover front">
+                    <h2>Nos souvenirs</h2>
+                    <div class="heart">❤️</div>
+                    <p>touche pour ouvrir</p>
+                </div>
+                <div class="magic-pages" id="magicPages"></div>
+                <div class="magic-cover back">
+                    <h2>À nous</h2>
+                    <div class="heart">💕</div>
+                </div>
+            </div>
+        </div>
+        <div class="hint-text">clique sur le livre</div>
+    </div>
+
+    <!-- ÉTAPE 5 - CŒUR -->
+    <div id="step5" class="step">
+        <div class="giant-heart-container" id="giantHeart"></div>
+        <div class="final-message">
+            <h2>Je t'aime</h2>
+            <p>merci pour tous ces moments</p>
+        </div>
     </div>
 
     <script>
-        const PHOTOS = [
-            {f:'photo1.jpg', c:"Notre premier regard"}, {f:'photo2.jpg', c:"Ton sourire magique"},
-            {f:'photo3.jpg', c:"Ce jour là..."}, {f:'photo4.jpg', c:"Toi et Moi"},
-            {f:'photo5.jpg', c:"Mon bonheur"}, {f:'photo6.jpg', c:"Cette étincelle"},
-            {f:'photo7.jpg', c:"Rien que toi"}, {f:'photo8 (2).jpg', c:"Notre complicité"},
-            {f:'photo9 (2).jpg', c:"Je t'aime"}, {f:'photo10.jpg', c:"Magie pure"},
-            {f:'photo11.jpg', c:"Pour toujours"}, {f:'photo12.jpg', c:"Mon âme soeur"},
-            {f:'photo13.jpg', c:"L'histoire parfaite"}, {f:'photo14.jpg.jpeg', c:"Mon tout"},
-            {f:'photo15.jpg', c:"A l'infini"}
-        ];
+        // ===== CONFIGURATION =====
+        const CONFIG = {
+            photos: [
+                'photo1.jpg', 'photo2.jpg', 'photo3.jpg',
+                'photo4.jpg', 'photo5.jpg', 'photo6.jpg',
+                'photo7.jpg', 'photo8 (2).jpg', 'photo9 (2).jpg',
+                'photo10.jpg', 'photo11.jpg', 'photo12.jpg',
+                'photo13.jpg', 'photo14.jpg.jpeg', 'photo15.jpg'
+            ],
+            
+            messages: [
+                "✨ Le premier battement de cœur ✨",
+                "💕 Ton sourire qui illumine tout",
+                "🌹 Ce regard qui m'a fait fondre",
+                "💖 L'instant où tout a basculé",
+                "🌟 Un moment de pure magie",
+                "💗 Toi, moi, et l'éternité",
+                "⭐ Cette étincelle unique",
+                "💓 Mon cœur s'emballe encore",
+                "🌸 Un souvenir gravé à jamais",
+                "💝 L'amour de ma vie",
+                "🌺 Notre bulle de bonheur",
+                "💘 C'était écrit dans les étoiles",
+                "🎀 Mon âme sœur",
+                "💞 L'histoire parfaite",
+                "💕 Je t'aime pour toujours"
+            ],
+            
+            dates: [
+                "15 Janvier 2023", "23 Février 2023", "08 Mars 2023",
+                "14 Avril 2023", "19 Mai 2023", "21 Juin 2023",
+                "07 Juillet 2023", "12 Août 2023", "03 Septembre 2023",
+                "18 Octobre 2023", "25 Novembre 2023", "31 Décembre 2023",
+                "14 Février 2024", "20 Mars 2024", "01 Avril 2024"
+            ]
+        };
 
-        class LoveApp {
+        // ===== APPLICATION =====
+        class App {
             constructor() {
-                this.pieces = [1,2,3,4,5,6,7,8,9];
-                this.sol = Array(9).fill(null);
-                this.sel = null;
-                setTimeout(() => document.getElementById('loading').style.display='none', 2000);
-            }
-            goTo(s) { document.querySelectorAll('.step').forEach(x=>x.classList.remove('active')); document.getElementById('step'+s).classList.add('active'); }
-            startPuzzle() { this.goTo(2); this.renderPz(); }
-            renderPz() {
-                const sg = document.getElementById('solGrid'); sg.innerHTML='';
-                this.sol.forEach((v,i) => {
-                    let c = document.createElement('div'); c.className='cell'+(v?' filled':'');
-                    c.textContent = v || '?'; c.onclick = () => this.place(i); sg.appendChild(c);
-                });
-                const pg = document.getElementById('pieceGrid'); pg.innerHTML='';
-                this.pieces.forEach((p,i) => {
-                    let b = document.createElement('button'); b.className='piece-btn'+(this.sel===i?' selected':'');
-                    b.textContent=p; b.onclick=()=> {this.sel=i; this.renderPz();}; pg.appendChild(b);
-                });
-                document.getElementById('status').textContent = this.sol.filter(x=>x).length + "/9";
-            }
-            place(i) {
-                if(this.sel===null || this.sol[i]) return;
-                this.sol[i] = this.pieces[this.sel]; this.pieces.splice(this.sel,1); this.sel=null;
-                this.renderPz(); if(this.sol.every(x=>x)) this.check();
-            }
-            check() {
-                if(this.sol.every((v,i)=>v===i+1)) {
-                    let v = document.createElement('div'); v.className='victory-overlay';
-                    v.innerHTML = '<div class="victory-box"><h2>Bravo ! ❤️</h2><button class="btn" onclick="app.startBook()">Voir la suite</button></div>';
-                    document.body.appendChild(v);
-                } else { alert("L'ordre n'est pas bon !"); this.pieces=[1,2,3,4,5,6,7,8,9]; this.sol=Array(9).fill(null); this.renderPz(); }
-            }
-            startBook() { document.querySelector('.victory-overlay').remove(); this.goTo(3); this.initB(); }
-            initB() {
-                const pc = document.getElementById('pages'); pc.innerHTML='';
-                PHOTOS.forEach(p => {
-                    let d = document.createElement('div'); d.className='page';
-                    d.innerHTML = <img src="${p.f}"><p>${p.c}</p>; pc.appendChild(d);
-                });
-            }
-            openBook() {
-                document.getElementById('book').classList.add('open');
-                let pgs = document.querySelectorAll('.page'); let cur=0;
-                let itv = setInterval(() => {
-                    if(cur<pgs.length) { pgs[cur].style.transform='rotateY(0deg)'; cur++; }
-                    else { clearInterval(itv); setTimeout(()=>this.final(), 2000); }
-                }, 1500);
-            }
-            final() { this.goTo(4); const c = document.getElementById('heartCont');
-                PHOTOS.forEach(p => {
-                    let img = document.createElement('img'); img.src=p.f; img.className='heart-photo';
-                    img.style.left=Math.random()*80+'%'; img.style.top=Math.random()*80+'%'; c.appendChild(img);
-                });
+                this.currentStep = 1;
+                this.pieces = [];
+                this.solution = [];
+                this.selectedPiece = null;
+                this.currentPage = 0;
+                this.bookPages = [];
+                this.bookOpen = false;
+                this.animationInProgress = false;
+                
+                this.photos = this.shuffleArray([...CONFIG.photos]);
+                this.messages = this.shuffleArray([...CONFIG.messages]);
+                this.dates = this.shuffleArray([...CONFIG.dates]);
+                
                 setTimeout(() => {
-                    document.querySelectorAll('.heart-photo').forEach((img,i) => {
-                        const t = (i/PHOTOS.length)*Math.PI*2;
-                        const x = 16*Math.pow(Math.sin(t),3);
-                        const y = 13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
-                        img.style.left = (50 + x*3) + '%'; img.style.top = (40 - y*3) + '%';
+                    document.getElementById('loading').style.opacity = '0';
+                    setTimeout(() => {
+                        document.getElementById('loading').style.display = 'none';
+                    }, 500);
+                }, 2000);
+
+                this.startStep1();
+            }
+
+            shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+
+            goToStep(step) {
+                document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+                document.getElementById(`step${step}`).classList.add('active');
+                this.currentStep = step;
+            }
+
+            // ===== ÉTAPE 1: MATRIX =====
+            startStep1() {
+                const matrixCanvas = document.getElementById('matrixCanvas');
+                const sparklesCanvas = document.getElementById('sparklesCanvas');
+                const matrixCtx = matrixCanvas.getContext('2d');
+                const sparklesCtx = sparklesCanvas.getContext('2d');
+                
+                matrixCanvas.width = window.innerWidth;
+                matrixCanvas.height = window.innerHeight;
+                sparklesCanvas.width = window.innerWidth;
+                sparklesCanvas.height = window.innerHeight;
+
+                const chars = "❤️💕💖💗💓✨⭐🌟";
+                const fontSize = 25;
+                const columns = matrixCanvas.width / fontSize;
+                const drops = [];
+
+                for (let i = 0; i < columns; i++) {
+                    drops[i] = Math.floor(Math.random() * -matrixCanvas.height);
+                }
+
+                const sparkles = [];
+                for (let i = 0; i < 50; i++) {
+                    sparkles.push({
+                        x: Math.random() * sparklesCanvas.width,
+                        y: Math.random() * sparklesCanvas.height,
+                        size: Math.random() * 5 + 2,
+                        speedX: (Math.random() - 0.5) * 2,
+                        speedY: (Math.random() - 0.5) * 2
                     });
-                }, 500);
+                }
+
+                const drawMatrix = () => {
+                    matrixCtx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                    matrixCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+
+                    for (let i = 0; i < drops.length; i++) {
+                        const char = chars[Math.floor(Math.random() * chars.length)];
+                        matrixCtx.fillStyle = `rgba(255, 105, 180, ${0.3 + Math.random() * 0.5})`;
+                        matrixCtx.font = `${fontSize}px 'Arial', 'Segoe UI Emoji'`;
+                        matrixCtx.shadowColor = '#ff69b4';
+                        matrixCtx.shadowBlur = 20;
+                        matrixCtx.fillText(char, i * fontSize, drops[i]);
+
+                        if (drops[i] > matrixCanvas.height && Math.random() > 0.975) {
+                            drops[i] = 0;
+                        }
+                        drops[i] += fontSize;
+                    }
+
+                    sparklesCtx.clearRect(0, 0, sparklesCanvas.width, sparklesCanvas.height);
+                    sparkles.forEach(s => {
+                        s.x += s.speedX;
+                        s.y += s.speedY;
+                        if (s.x < 0 || s.x > sparklesCanvas.width) s.speedX *= -1;
+                        if (s.y < 0 || s.y > sparklesCanvas.height) s.speedY *= -1;
+                        sparklesCtx.beginPath();
+                        sparklesCtx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                        sparklesCtx.fillStyle = `rgba(255, 255, 255, ${0.3 + Math.random() * 0.5})`;
+                        sparklesCtx.shadowColor = '#ff69b4';
+                        sparklesCtx.shadowBlur = 15;
+                        sparklesCtx.fill();
+                    });
+
+                    requestAnimationFrame(drawMatrix);
+                };
+
+                drawMatrix();
+
+                let count = 3;
+                const countdownEl = document.getElementById('countdown');
+
+                const countdownInterval = setInterval(() => {
+                    countdownEl.textContent = count;
+                    count--;
+
+                    if (count < 0) {
+                        clearInterval(countdownInterval);
+                        this.goToStep(2);
+                        this.startStep2();
+                    }
+                }, 1000);
+            }
+
+            // ===== ÉTAPE 2: PLUIE =====
+            startStep2() {
+                const canvas = document.getElementById('rainCanvas');
+                const ctx = canvas.getContext('2d');
+                
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+
+                const particles = [];
+                const symbols = ['❤️', '💕', '💖', '💗', '💓', '✨', '⭐', '🌟'];
+
+                for (let i = 0; i < 150; i++) {
+                    particles.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * -canvas.height,
+                        size: Math.random() * 30 + 15,
+                        speed: Math.random() * 3 + 2,
+                        symbol: symbols[Math.floor(Math.random() * symbols.length)],
+                        opacity: Math.random() * 0.7 + 0.3,
+                        rotation: Math.random() * 360
+                    });
+                }
+
+                const animate = () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    particles.forEach(p => {
+                        p.y += p.speed;
+                        p.rotation += 1;
+
+                        if (p.y > canvas.height + 100) {
+                            p.y = -100;
+                            p.x = Math.random() * canvas.width;
+                        }
+
+                        ctx.save();
+                        ctx.translate(p.x, p.y);
+                        ctx.rotate(p.rotation * Math.PI / 180);
+                        ctx.font = `${p.size}px 'Arial', 'Segoe UI Emoji'`;
+                        ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+                        ctx.shadowColor = '#ff69b4';
+                        ctx.shadowBlur = 30;
+                        ctx.fillText(p.symbol, 0, 0);
+                        ctx.restore();
+                    });
+
+                    requestAnimationFrame(animate);
+                };
+
+                animate();
+
+                setTimeout(() => {
+                    this.goToStep(3);
+                    this.initPuzzle();
+                }, 4000);
+            }
+
+            // ===== ÉTAPE 3: PUZZLE =====
+            initPuzzle() {
+                this.pieces = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+                this.shuffleArray(this.pieces);
+                this.solution = [null, null, null, null, null, null, null, null, null];
+                this.selectedPiece = null;
+                this.renderPuzzle();
+            }
+
+            renderPuzzle() {
+                this.renderSolutionGrid();
+                this.renderPiecesGrid();
+                this.updateStatus();
+            }
+
+            renderSolutionGrid() {
+                const grid = document.getElementById('solutionGrid');
+                grid.innerHTML = '';
+
+                for (let i = 0; i < 9; i++) {
+                    const cell = document.createElement('div');
+                    cell.className = `cell ${this.solution[i] !== null ? 'filled' : ''}`;
+                    cell.dataset.index = i;
+
+                    if (this.solution[i] !== null) {
+                        const span = document.createElement('span');
+                        span.textContent = this.solution[i];
+                        cell.appendChild(span);
+                    } else {
+                        cell.textContent = '?';
+                    }
+
+                    cell.addEventListener('click', () => this.handleCellClick(i));
+                    grid.appendChild(cell);
+                }
+            }
+
+            renderPiecesGrid() {
+                const grid = document.getElementById('piecesGrid');
+                grid.innerHTML = '';
+
+                this.pieces.forEach((piece, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = `piece-btn ${this.selectedPiece === index ? 'selected' : ''}`;
+                    btn.textContent = piece;
+                    btn.addEventListener('click', () => this.handlePieceClick(index));
+                    grid.appendChild(btn);
+                });
+            }
+
+            handlePieceClick(index) {
+                this.selectedPiece = this.selectedPiece === index ? null : index;
+                this.renderPuzzle();
+            }
+
+            handleCellClick(cellIndex) {
+                if (this.selectedPiece === null) {
+                    alert('Choisis d\'abord un numéro !');
+                    return;
+                }
+
+                if (this.solution[cellIndex] !== null) {
+                    alert('Cette case est déjà remplie !');
+                    return;
+                }
+
+                const pieceValue = this.pieces[this.selectedPiece];
+                this.solution[cellIndex] = pieceValue;
+                this.pieces.splice(this.selectedPiece, 1);
+                this.selectedPiece = null;
+                
+                this.renderPuzzle();
+
+                if (this.solution.every(cell => cell !== null)) {
+                    this.checkSolution();
+                }
+            }
+
+            checkSolution() {
+                const isCorrect = this.solution.every((value, index) => value === index + 1);
+                
+                if (isCorrect) {
+                    this.showVictory();
+                } else {
+                    alert('L\'ordre n\'est pas bon ! Réessaie.');
+                }
+            }
+
+            showVictory() {
+                const overlay = document.createElement('div');
+                overlay.className = 'victory-overlay';
+                overlay.innerHTML = `
+                    <div class="victory-box">
+                        <h2>🎉 BRAVO !</h2>
+                        <p>Tu as réussi le puzzle !</p>
+                        <button onclick="app.continueToBook()">Voir la suite ✨</button>
+                    </div>
+                `;
+                document.body.appendChild(overlay);
+            }
+
+            continueToBook() {
+                document.querySelector('.victory-overlay').remove();
+                this.goToStep(4);
+                this.prepareMagicBook();
+            }
+
+            resetPuzzle() {
+                this.initPuzzle();
+            }
+
+            updateStatus() {
+                const filled = this.solution.filter(c => c !== null).length;
+                document.getElementById('status').textContent = `${filled}/9 placé(e)s`;
+            }
+
+            // ===== ÉTAPE 4: LIVRE =====
+            prepareMagicBook() {
+                const pagesContainer = document.getElementById('magicPages');
+                pagesContainer.innerHTML = '';
+
+                this.photos.forEach((photo, index) => {
+                    const page = document.createElement('div');
+                    page.className = 'magic-page';
+
+                    const img = document.createElement('img');
+                    img.src = photo;
+                    img.onerror = () => { img.src = 'photo1.jpg'; };
+                    
+                    const caption = document.createElement('div');
+                    caption.className = 'page-caption';
+                    caption.textContent = this.messages[index] || 'Souvenir';
+                    
+                    const date = document.createElement('div');
+                    date.className = 'page-date';
+                    date.textContent = this.dates[index] || '';
+
+                    page.appendChild(img);
+                    page.appendChild(caption);
+                    page.appendChild(date);
+                    pagesContainer.appendChild(page);
+                });
+
+                this.bookPages = document.querySelectorAll('.magic-page');
+                this.currentPage = 0;
+                
+                document.getElementById('bookWrapper').addEventListener('click', () => this.openMagicBook());
+            }
+
+            openMagicBook() {
+                const book = document.getElementById('magicBook');
+                
+                if (!this.bookOpen && !this.animationInProgress) {
+                    this.bookOpen = true;
+                    book.classList.add('open');
+                    
+                    setTimeout(() => {
+                        this.showMagicPages();
+                    }, 1500);
+                }
+            }
+
+            showMagicPages() {
+                if (this.currentPage < this.bookPages.length) {
+                    this.bookPages[this.currentPage].style.transform = 'rotateY(0deg)';
+                    this.currentPage++;
+
+                    setTimeout(() => {
+                        this.showMagicPages();
+                    }, 2000);
+                } else {
+                    setTimeout(() => {
+                        document.getElementById('magicBook').classList.remove('open');
+                        
+                        setTimeout(() => {
+                            this.goToStep(5);
+                            this.createGiantHeart();
+                        }, 1500);
+                    }, 2500);
+                }
+            }
+
+            // ===== ÉTAPE 5: CŒUR =====
+            createGiantHeart() {
+                const container = document.getElementById('giantHeart');
+                container.innerHTML = '';
+
+                this.photos.forEach((photo, index) => {
+                    const img = document.createElement('img');
+                    img.src = photo;
+                    img.className = 'giant-heart-photo';
+                    img.onerror = () => { img.src = 'photo1.jpg'; };
+                    
+                    const size = 70 + Math.floor(Math.random() * 40);
+                    img.style.width = size + 'px';
+                    img.style.height = size + 'px';
+                    
+                    img.style.left = Math.random() * (window.innerWidth - size) + 'px';
+                    img.style.top = Math.random() * (window.innerHeight - size) + 'px';
+                    img.style.transform = `rotate(${Math.random() * 360}deg) scale(0.5)`;
+                    img.style.opacity = '0';
+                    
+                    container.appendChild(img);
+
+                    setTimeout(() => {
+                        img.style.opacity = '1';
+                        img.style.transform = `rotate(${Math.random() * 360}deg) scale(1)`;
+                    }, index * 30);
+                });
+
+                setTimeout(() => {
+                    const photos = document.querySelectorAll('.giant-heart-photo');
+                    const centerX = window.innerWidth / 2;
+                    const centerY = window.innerHeight / 2;
+                    
+                    photos.forEach((photo, i) => {
+                        const t = (i / photos.length) * Math.PI * 2;
+                        const x = 16 * Math.pow(Math.sin(t), 3);
+                        const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
+                        
+                        photo.style.left = (centerX + x * 20) + 'px';
+                        photo.style.top = (centerY - y * 20) + 'px';
+                        photo.style.transform = `rotate(${Math.random() * 20 - 10}deg) scale(1)`;
+                    });
+                }, 1000);
             }
         }
-        const app = new LoveApp();
+
+        // ===== LANCEMENT =====
+        const app = new App();
     </script>
 </body>
 </html>
