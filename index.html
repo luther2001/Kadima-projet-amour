@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>✨ Notre Histoire d'Amour ✨</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: #1a0f1a;
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            position: fixed;
+        }
+
+        /* Loading */
+        #loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1a0f1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 1s;
+        }
+
+        .loading-heart {
+            font-size: 4rem;
+            animation: heartbeat 1s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        /* Étapes */
+        .step {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(145deg, #1a0f1a, #2d1a2d);
+        }
+
+        .step.active {
+            display: flex;
+        }
+
+        /* ÉTAPE 1 - Introduction */
+        #step1 {
+            text-align: center;
+            padding: 20px;
+        }
+
+        #step1 h1 {
+            font-size: 2.5rem;
+            color: #ff69b4;
+            margin-bottom: 20px;
+        }
+
+        #step1 p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .btn {
+            background: #ff69b4;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255,105,180,0.4);
+        }
+
+        /* ÉTAPE 2 - PUZZLE */
+        #step2 {
+            flex-direction: column;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        .puzzle-title {
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .puzzle-title h2 {
+            color: #ff69b4;
+            font-size: 1.5rem;
+        }
+
+        /* Image de référence */
+        .reference-box {
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .reference-box img {
+            width: 120px;
+            height: 120px;
+            border-radius: 20px;
+            border: 3px solid #ff69b4;
+            object-fit: cover;
+        }
+
+        .reference-box .label {
+            color: #ffb6c1;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+
+        /* Zone de solution */
+        .solution-area {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 20px;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 350px;
+        }
+
+        .solution-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 15px;
+        }
+
+        .cell {
+            aspect-ratio: 1/1;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            border: 2px dashed #ff69b4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: rgba(255,255,255,0.2);
+        }
+
+        .cell.filled {
+            border: 3px solid #ff69b4;
+            background: rgba(255,105,180,0.2);
+        }
+
+        .cell.filled span {
+            color: #ff69b4;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        /* Zone des pièces */
+        .pieces-area {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 20px;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 350px;
+        }
+
+        .pieces-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .piece-btn {
+            aspect-ratio: 1/1;
+            background: #ff69b4;
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+            transition: all 0.2s;
+        }
+
+        .piece-btn:active {
+            transform: scale(0.95);
+            background: #ff1493;
+        }
+
+        .piece-btn.selected {
+            border: 4px solid white;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #ff69b4;
+        }
+
+        .piece-btn.placed {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .status {
+            margin: 10px 0;
+            color: #ffb6c1;
+        }
+
+        .reset-btn {
+            background: transparent;
+            color: #ffb6c1;
+            border: 2px solid #ffb6c1;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        /* Message de victoire */
+        .victory-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .victory-box {
+            background: #ff69b4;
+            padding: 40px;
+            border-radius: 40px;
+            text-align: center;
+            max-width: 320px;
+            border: 4px solid white;
+            animation: popIn 0.5s;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+
+        .victory-box h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .victory-box p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .victory-box button {
+            background: white;
+            color: #ff69b4;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        /* ÉTAPE 3 - LIVRE DE SOUVENIRS */
+        #step3 {
+            background: #2d1a2d;
+        }
+
+        .book-container {
+            perspective: 2000px;
+            width: 90%;
+            max-width: 350px;
+            height: 70vh;
+            cursor: pointer;
+        }
+
+        .book {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 1s;
+        }
+
+        .book.open {
+            transform: rotateY(-20deg) translateX(5%);
+        }
+
+        .cover {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #ff69b4, #c71585);
+            border-radius: 15px 5px 5px 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            backface-visibility: hidden;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .cover.front {
+            transform: rotateY(0deg);
+        }
+
+        .cover.back {
+            transform: rotateY(180deg);
+            background: linear-gradient(145deg, #c71585, #8b008b);
+        }
+
+        .cover h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .cover .heart {
+            font-size: 4rem;
+            animation: beat 2s infinite;
+        }
+
+        @keyframes beat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .cover p {
+            font-size: 1rem;
+            margin-top: 20px;
+            opacity: 0.9;
+        }
+
+        .pages-container {
+            position: absolute;
+            width: 98%;
+            height: 98%;
+            left: 1%;
+            top: 1%;
+            transform-style: preserve-3d;
+        }
+
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 8px 2px 2px 8px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            backface-visibility: hidden;
+            transform-origin: left;
+            transition: transform 1s;
+            transform: rotateY(180deg);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .page img {
+            max-width: 90%;
+            max-height: 60%;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .page .caption {
+            color: #4a2a4a;
+            font-size: 1rem;
+            text-align: center;
+            font-style: italic;
+            padding: 0 10px;
+        }
+
+        .hint-text {
+            position: absolute;
+            bottom: 20px;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.9rem;
+        }
+
+        /* ÉTAPE 4 - CŒUR FINAL */
+        #step4 {
+            background: #1a0f1a;
+        }
+
+        .heart-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .heart-photo {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            border-radius: 15px;
+            object-fit: cover;
+            box-shadow: 0 10px 25px rgba(255,105,180,0.5);
+            transition: all 2s;
+            border: 3px solid white;
+        }
+
+        .final-message {
+            position: absolute;
+            bottom: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            padding: 20px 40px;
+            border-radius: 50px;
+            border: 2px solid #ff69b4;
+        }
+
+        .final-message h2 {
+            font-size: 2.5rem;
+            color: #ff69b4;
+            margin-bottom: 10px;
+        }
+
+        .final-message p {
+            font-size: 1.1rem;
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .heart-photo {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .final-message h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading -->
+    <div id="loading">
+        <div class="loading-heart">❤️</div>
+    </div>
+
+    <!-- ÉTAPE 1 - Introduction -->
+    <div id="step1" class="step active">
+        <div>
+            <h1>✨ Pour toi ma vie ✨</h1>
+            <p>Résous ce petit jeu<br>pour découvrir un message spécial...</p>
+            <button class="btn" onclick="app.startPuzzle()">Commencer</button>
+        </div>
+    </div>
+
+    <!-- ÉTAPE 2 - Puzzle -->
+    <div id="step2" class="step">
+        <div class="puzzle-title">
+            <h2>🧩 Notre première photo</h2>
+        </div>
+
+        <div class="reference-box">
+            <img src="images/photo1.jpg" alt="référence" id="puzzleImage">
+            <div class="label">reconstitue dans l'ordre 1 à 9</div>
+        </div>
+
+        <div class="solution-area">
+            <div class="solution-grid" id="solutionGrid"></div>
+        </div>
+
+        <div class="pieces-area">
+            <div class="pieces-grid" id="piecesGrid"></div>
+        </div>
+
+        <div class="status" id="status">0/9</div>
+        <button class="reset-btn" onclick="app.resetPuzzle()">🔄 Recommencer</button>
+    </div>
+
+    <!-- ÉTAPE 3 - Livre de souvenirs -->
+    <div id="step3" class="step">
+        <div class="book-container" id="bookWrapper">
+            <div class="book" id="book">
+                <div class="cover front">
+                    <h2>Nos souvenirs</h2>
+                    <div class="heart">❤️</div>
+                    <p>touche pour ouvrir</p>
+                </div>
+                <div class="pages-container" id="pages"></div>
+                <div class="cover back">
+                    <h2>À nous</h2>
+                    <div class="heart">💕</div>
+                </div>
+            </div>
+        </div>
+        <div class="hint-text">clique sur le livre</div>
+    </div>
+
+    <!-- ÉTAPE 4 - Cœur final -->
+    <div id="step4" class="step">
+        <div class="heart-container" id="heartContainer"></div>
+        <div class="final-message">
+            <h2>Je t'aime</h2>
+            <p>merci pour tous ces moments</p>
+        </div>
+    </div>
+
+    <script>
+        // TES PHOTOS ICI (à personnaliser)
+        const PHOTOS = [
+            { file: 'images/photo1.jpg', caption: "Notre premier regard..." },
+            { file: 'images/photo2.jpg', caption: "Ton sourire qui me fait fondre" },
+            { file: 'images/photo3.jpg', caption: "Ce jour inoubliable" },
+            { file: 'images/photo4.jpg', caption: "Toi et moi" },
+            { file: 'images/photo5.jpg', caption: "Mon cœur s'arrête" },
+            { file: 'images/photo6.jpg', caption: "Cette étincelle" },
+            { file: 'images/photo7.jpg', caption: "Rien que toi" },
+            { file: 'images/photo8 (2).jpg', caption: "Notre bonheur" },
+            { file: 'images/photo9 (2).jpg', caption: "Je t'aime" }
+        ];
+
+        class App {
+            constructor() {
+                this.currentStep = 1;
+                this.pieces = [];
+                this.solution = [];
+                this.selectedPiece = null;
+                this.currentPage = 0;
+                
+                setTimeout(() => {
+                    document.getElementById('loading').style.opacity = '0';
+                    setTimeout(() => {
+                        document.getElementById('loading').style.display = 'none';
+                    }, 500);
+                }, 1500);
+            }
+
+            // ===== ÉTAPE 2 : PUZZLE =====
+            startPuzzle() {
+                this.goToStep(2);
+                this.initPuzzle();
+            }
+
+            initPuzzle() {
+                this.pieces = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+                this.shuffle(this.pieces);
+                this.solution = [null, null, null, null, null, null, null, null, null];
+                this.selectedPiece = null;
+                this.renderPuzzle();
+            }
+
+            shuffle(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+
+            renderPuzzle() {
+                this.renderSolutionGrid();
+                this.renderPiecesGrid();
+                this.updateStatus();
+            }
+
+            renderSolutionGrid() {
+                const grid = document.getElementById('solutionGrid');
+                grid.innerHTML = '';
+
+                for (let i = 0; i < 9; i++) {
+                    const cell = document.createElement('div');
+                    cell.className = `cell ${this.solution[i] !== null ? 'filled' : ''}`;
+                    cell.dataset.index = i;
+
+                    if (this.solution[i] !== null) {
+                        const span = document.createElement('span');
+                        span.textContent = this.solution[i];
+                        cell.appendChild(span);
+                    } else {
+                        cell.textContent = '?';
+                    }
+
+                    cell.addEventListener('click', () => this.handleCellClick(i));
+                    grid.appendChild(cell);
+                }
+            }
+
+            renderPiecesGrid() {
+                const grid = document.getElementById('piecesGrid');
+                grid.innerHTML = '';
+
+                this.pieces.forEach((piece, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = `piece-btn ${this.selectedPiece === index ? 'selected' : ''}`;
+                    btn.textContent = piece;
+                    btn.addEventListener('click', () => this.handlePieceClick(index));
+                    grid.appendChild(btn);
+                });
+            }
+
+            handlePieceClick(index) {
+                this.selectedPiece = this.selectedPiece === index ? null : index;
+                this.renderPuzzle();
+            }
+
+            handleCellClick(cellIndex) {
+                if (this.selectedPiece === null) {
+                    alert('Choisis d\'abord un numéro !');
+                    return;
+                }
+
+                if (this.solution[cellIndex] !== null) {
+                    alert('Cette case est déjà remplie !');
+                    return;
+                }
+
+                const pieceValue = this.pieces[this.selectedPiece];
+                this.solution[cellIndex] = pieceValue;
+                this.pieces.splice(this.selectedPiece, 1);
+                this.selectedPiece = null;
+                
+                this.renderPuzzle();
+
+                if (this.solution.every(cell => cell !== null)) {
+                    this.checkSolution();
+                }
+            }
+
+            checkSolution() {
+                const isCorrect = this.solution.every((value, index) => value === index + 1);
+                
+                if (isCorrect) {
+                    this.showVictory();
+                } else {
+                    alert('L\'ordre n\'est pas bon ! Réessaie ou recommence.');
+                }
+            }
+
+            showVictory() {
+                const overlay = document.createElement('div');
+                overlay.className = 'victory-overlay';
+                overlay.innerHTML = `
+                    <div class="victory-box">
+                        <h2>🎉 BRAVO !</h2>
+                        <p>Tu as réussi le puzzle !<br>Prête à voir la suite ?</p>
+                        <button onclick="app.continueToBook()">Oui, je suis prête ✨</button>
+                    </div>
+                `;
+                document.body.appendChild(overlay);
+            }
+
+            continueToBook() {
+                document.querySelector('.victory-overlay').remove();
+                this.goToStep(3);
+                this.initBook();
+            }
+
+            resetPuzzle() {
+                this.initPuzzle();
+            }
+
+            updateStatus() {
+                const filled = this.solution.filter(c => c !== null).length;
+                document.getElementById('status').textContent = `${filled}/9 placé(e)s`;
+            }
+
+            // ===== ÉTAPE 3 : LIVRE =====
+            initBook() {
+                const pagesContainer = document.getElementById('pages');
+                pagesContainer.innerHTML = '';
+
+                PHOTOS.forEach((photo, index) => {
+                    const page = document.createElement('div');
+                    page.className = 'page';
+                    
+                    const img = document.createElement('img');
+                    img.src = photo.file;
+                    
+                    const caption = document.createElement('div');
+                    caption.className = 'caption';
+                    caption.textContent = photo.caption;
+                    
+                    page.appendChild(img);
+                    page.appendChild(caption);
+                    pagesContainer.appendChild(page);
+                });
+
+                this.pages = document.querySelectorAll('.page');
+                this.currentPage = 0;
+                
+                document.getElementById('bookWrapper').addEventListener('click', () => this.openBook());
+            }
+
+            openBook() {
+                const book = document.getElementById('book');
+                
+                if (!book.classList.contains('open')) {
+                    book.classList.add('open');
+                    setTimeout(() => this.showPages(), 800);
+                }
+            }
+
+            showPages() {
+                if (this.currentPage < this.pages.length) {
+                    this.pages[this.currentPage].style.transform = 'rotateY(0deg)';
+                    this.currentPage++;
+                    setTimeout(() => this.showPages(), 1800);
+                } else {
+                    setTimeout(() => {
+                        document.getElementById('book').classList.remove('open');
+                        setTimeout(() => this.goToStep(4), 1000);
+                        setTimeout(() => this.createHeart(), 1500);
+                    }, 2000);
+                }
+            }
+
+            // ===== ÉTAPE 4 : CŒUR =====
+            createHeart() {
+                const container = document.getElementById('heartContainer');
+                container.innerHTML = '';
+
+                PHOTOS.forEach((photo, index) => {
+                    const img = document.createElement('img');
+                    img.src = photo.file;
+                    img.className = 'heart-photo';
+                    
+                    img.style.left = Math.random() * (window.innerWidth - 70) + 'px';
+                    img.style.top = Math.random() * (window.innerHeight - 70) + 'px';
+                    img.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    
+                    container.appendChild(img);
+                });
+
+                setTimeout(() => {
+                    const photos = document.querySelectorAll('.heart-photo');
+                    const centerX = window.innerWidth / 2;
+                    const centerY = window.innerHeight / 2 - 50;
+                    
+                    photos.forEach((photo, i) => {
+                        const t = (i / photos.length) * Math.PI * 2;
+                        const x = 16 * Math.pow(Math.sin(t), 3);
+                        const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
+                        
+                        photo.style.left = (centerX + x * 20) + 'px';
+                        photo.style.top = (centerY - y * 20) + 'px';
+                        photo.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
+                    });
+                }, 500);
+            }
+
+            // ===== UTILITAIRE =====
+            goToStep(step) {
+                document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+                document.getElementById(`step${step}`).classList.add('active');
+                this.currentStep = step;
+            }
+        }
+
+        const app = new App();
+    </script>
+</body>
+</html>
